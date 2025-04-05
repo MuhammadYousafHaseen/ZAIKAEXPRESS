@@ -4,8 +4,11 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface IOwner extends Document {
   name: string;
   email: string;
+  phone: string;
+  address?: string;
   productsCategory: string;
   isApprovedOwner: boolean;
+  requestForApproval?:string,
   password: string;
   picture?: string;
   products: mongoose.Types.ObjectId[]; // Array of product IDs, referencing Product model
@@ -16,6 +19,9 @@ const ownerSchema: Schema<IOwner> = new Schema(
   {
     name: { type: String, required: [true, 'Name is required'], unique: true },
     email: { type: String, required: [true, 'Email is required'], unique: true },
+    phone: { type: String, required: [true, 'Phone number is required'], unique: true },
+    address: { type: String, required: [true, 'Address is required'] },
+    requestForApproval: { type: String },
     productsCategory: { type: String, required: [true, 'Products category is required'] },
     isApprovedOwner: { type: Boolean, default: false },
     password: { type: String, required: [true, 'Password is required'] },
