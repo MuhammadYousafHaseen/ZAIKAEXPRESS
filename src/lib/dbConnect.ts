@@ -13,7 +13,7 @@ async function dbConnect(): Promise<void> {
     }
 
     try {
-        const db = await mongoose.connect(process.env.MONGODB_URI || '' , {})
+        const db = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/zaikaexpress' )
         console.log(db)
         // db.connection[0].readyState
         connection.isConnected = db.connections[0].readyState

@@ -16,7 +16,7 @@ interface IUser extends Document {
   verifyCode: string;
   verifyCodeExpiry: Date;
   cart: mongoose.Types.ObjectId[];
-  orders: any[]; // You can define a specific type if needed for orders
+  orders: mongoose.Types.ObjectId[]; // You can define a specific type if needed for orders
 }
 
 // Defining the User schema
@@ -47,10 +47,12 @@ const userSchema: Schema<IUser> = new Schema(
         ref: "Product",
       },
     ],
-    orders: {
-      type: Array,
-      default: [],
-    },
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      }
+    ],
   },
   { timestamps: true }
 );
