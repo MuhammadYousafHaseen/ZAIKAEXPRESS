@@ -56,7 +56,7 @@ const Page = () => {
 
       if(result?.url){
         setIsSubmitting(false)
-        router.replace('/dashboard')
+        router.replace('/')
         toast("Success!", {
           description: "Login successful" 
         })
@@ -83,8 +83,8 @@ const Page = () => {
                   <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
                   <FormControl>
                     <Input
-                      type="text"
-                      placeholder="Enter Your Email/Username"
+                      type="email"
+                      placeholder="Enter Your Email"
                       {...field}
                       className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     />

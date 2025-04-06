@@ -5,13 +5,11 @@ import User from "@/models/user.model";
 import dbConnect from "@/lib/dbConnect";
 import bcrypt from 'bcryptjs';
 import { AuthOptions } from "next-auth";
-import { IUser } from "@/models/user.model";
 import Owner from "@/models/owner.model"
 
 interface Credentials {
-    email?: string;
+    identifier: string;
     password: string;
-    name?: string;
 }
 
 
@@ -23,16 +21,19 @@ export const authOptions: AuthOptions = {
             id:"credentials",
             name:"Credentials",
             credentials: {
-                email: { label: "Email", type: "text", placeholder: "email" },
+                email: { label: "Email", type: "email", placeholder: "email" },
                 password: { label: "Password", type: "password", placeholder: "password" },
             },
-            async authorize(credentials: Credentials | undefined): Promise<IUser | null> {
+            async authorize(credentials: Credentials | undefined):Promise<any> {
+                //console.log(credentials);
                 if (!credentials) return null;
                 await dbConnect();
                 try {
-                    const user = await User.findOne({ 
-                      $or:  [ {email: credentials.email},{name: credentials.name}]
-                     });
+                    const email = credentials.identifier?.trim().toLowerCase();
+                   // console.log(email)
+
+                    const user = await User.findOne({email:email});
+                    //console.log(user)
                      if(!user){
                         throw new Error("User not found with this email");
                      }

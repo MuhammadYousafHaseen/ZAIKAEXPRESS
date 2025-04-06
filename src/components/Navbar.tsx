@@ -116,7 +116,7 @@ function Navbar() {
                   <Link href="/user/orders" className="hover:text-blue-500 transition">Orders</Link>
                   <Button 
                     onClick={() => signOut()} 
-                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                    className="px-4 py-2 w-20 h-6 text-center hover:cursor-pointer cursor-pointer bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                   >
                     Sign Out
                   </Button>

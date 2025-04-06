@@ -8,7 +8,7 @@ export async function POST(request: Request) {
         console.log("Received Data:", { name, code });
 
         const decodedname = decodeURIComponent(name);
-        console.log("Decoded Username:", decodedname);
+        console.log("Decoded Name:", decodedname);
 
         const user = await User.findOne({ name: decodedname });
         if (!user) {

@@ -21,18 +21,18 @@ import { Input } from "@/components/ui/input";
 
 function VerifyAccount() {
   const router = useRouter();
-  const params = useParams<{ username?: string }>();
+  const params = useParams<{ name?: string }>();
   const { toast } = useToast();
 
   // Ensure username exists before making request
   useEffect(() => {
-    if (!params.username) {
+    if (!params.name) {
       toast("Error", {
-        description: "Username is missing. Please check your URL.",
+        description: "Name is missing. Please check your URL.",
       });
       router.replace("/sign-in");
     }
-  }, [params.username, router, toast]);
+  }, [params.name, router, toast]);
 
   // zod implementation
   const form = useForm<z.infer<typeof verifyScema>>({
@@ -41,11 +41,11 @@ function VerifyAccount() {
   });
 
   const onSubmit = async (data: z.infer<typeof verifyScema>) => {
-    if (!params.username) return;
+    if (!params.name) return;
 
     try {
       const response = await axios.post("/api/user/verify-code", {
-        username: params.username,
+        name: params.name,
         code: data.code,
       });
 

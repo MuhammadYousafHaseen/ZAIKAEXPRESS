@@ -225,7 +225,7 @@ const Page = () => {
                   <FormLabel className="text-gray-700 dark:text-gray-300">Province</FormLabel>
                   <FormControl>
                     <Input
-                      type="password"
+                      type="text"
                       placeholder="Enter Your Province Name"
                       {...field}
                       className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
