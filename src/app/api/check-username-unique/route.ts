@@ -40,7 +40,7 @@ export async function GET(request: Request) {
             return Response.json(
                 {
                     success:false,
-                    message:"name already exists"
+                    message:"Name already exists"
                 },
                 {
                     status:400
@@ -50,7 +50,7 @@ export async function GET(request: Request) {
 
         return Response.json({
             success:true,
-            message:"name is available"
+            message:"Name is available"
         },
          {
         status:200
