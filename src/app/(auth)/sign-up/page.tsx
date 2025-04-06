@@ -274,7 +274,7 @@ const Page = () => {
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-400">
             Already a member?{" "}
-            <Link href="/auth/sign-in" className="text-blue-600 hover:underline dark:text-blue-400">
+            <Link href="/sign-in" className="text-blue-600 hover:underline dark:text-blue-400">
               Sign In
             </Link>
           </p>
