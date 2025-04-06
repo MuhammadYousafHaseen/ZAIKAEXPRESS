@@ -10,7 +10,7 @@ interface IOwner extends Document {
   isApprovedOwner: boolean;
   requestForApproval?:string,
   password: string;
-  picture?: string;
+  image?: string;
   products: mongoose.Types.ObjectId[]; // Array of product IDs, referencing Product model
 }
 
@@ -25,7 +25,7 @@ const ownerSchema: Schema<IOwner> = new Schema(
     productsCategory: { type: String, required: [true, 'Products category is required'] },
     isApprovedOwner: { type: Boolean, default: false },
     password: { type: String, required: [true, 'Password is required'] },
-    picture: { type: String },
+    image: { type: String },
     products: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'Product' } // Array of product IDs referencing Product
     ],

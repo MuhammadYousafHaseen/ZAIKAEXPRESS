@@ -17,6 +17,7 @@ interface Credentials {
 
 
 export const authOptions: AuthOptions = {
+    
     providers:[
         CredentialsProvider({
             id:"credentials",
@@ -51,6 +52,7 @@ export const authOptions: AuthOptions = {
             },
         }),
     ],
+    //csrf: false, // Disable CSRF for testing (do NOT use in production)
 
     //callbacks
     callbacks:{

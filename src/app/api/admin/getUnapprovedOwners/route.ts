@@ -1,9 +1,17 @@
 import dbConnect from "@/lib/dbConnect";
 import Owner from "@/models/owner.model";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 export async function GET() {
   await dbConnect();
+   // Optional: Admin authorization check (pseudo-code)
+   const session = await getServerSession(authOptions);
+   if (!session || session.user.isAdmin !== true) {
+     return Response.json({ message: "Unauthorized" }, { status: 401 });
+   }
+
   // const { search } = request.query;
   // const searchQuery = search ? { name: { $regex: search, $options: 'i' } } : {};
   const owners = await Owner.find({ isApprovedOwner: false });

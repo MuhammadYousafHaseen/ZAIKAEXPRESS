@@ -5,13 +5,14 @@ import Owner from "@/models/owner.model";
 
 
 
+
 export async function POST(request: Request) {
     await dbConnect();
 
     try {
 
-        const { name, email, password, phone, address, productsCategory, requestForApproval } = await request.json();
-        if (!name || !email || !password || !phone || !address || !productsCategory || !requestForApproval) {
+        const { name, email, password, phone, address, image, productsCategory, requestForApproval } = await request.json();
+        if (!name || !email || !password || !phone || !address || !productsCategory || !requestForApproval || !image) {
             return Response.json(
                 {
                     success: false,
@@ -78,10 +79,12 @@ export async function POST(request: Request) {
                 )
             }
         } else {
+          
             const hashedPassword = await bcrypt.hash(password, 10);
             const newOwner = await Owner.create({
                 name,
                 email,
+                image,
                 password: hashedPassword,
                 phone,
                 address,
@@ -90,7 +93,7 @@ export async function POST(request: Request) {
                 isApprovedOwner: false
             })
             await newOwner.save();
-            return Response.json({ success: true, message: "Owner registered successfully. Please wait for admin approval", newOwner }, { status: 200 })
+            return Response.json({ success: true,data:newOwner, message: "Owner registered successfully. Please wait for admin approval" }, { status: 200 })
         }
 
 
