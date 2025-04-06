@@ -13,7 +13,7 @@ export const GET = async () => {
     return Response.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const ownerId = session.user.id;
+  const ownerId = session.user.ownerId;
 
   try {
     // Step 1: Get all products by the owner

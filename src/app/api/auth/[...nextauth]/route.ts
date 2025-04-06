@@ -6,11 +6,15 @@ import dbConnect from "@/lib/dbConnect";
 import bcrypt from 'bcryptjs';
 import { AuthOptions } from "next-auth";
 import { IUser } from "@/models/user.model";
+import Owner from "@/models/owner.model"
 
 interface Credentials {
-    email: string;
+    email?: string;
     password: string;
-  }
+    name?: string;
+}
+
+
 
 export const authOptions: AuthOptions = {
     providers:[
@@ -26,7 +30,7 @@ export const authOptions: AuthOptions = {
                 await dbConnect();
                 try {
                     const user = await User.findOne({ 
-                         email: credentials.email,
+                      $or:  [ {email: credentials.email},{name: credentials.name}]
                      });
                      if(!user){
                         throw new Error("User not found with this email");
@@ -56,6 +60,10 @@ export const authOptions: AuthOptions = {
                 token.name = user.name;
                 token.email = user.email;
                 token.isAdmin = user.isAdmin;
+                const owner = await Owner.findOne({email: user.email});
+                if(owner){
+                    token.ownerId = owner._id?.toString();
+                }
 
             }
             return token;
@@ -66,6 +74,9 @@ export const authOptions: AuthOptions = {
                 session.user.name = token.name;
                 session.user.email = token.email;
                 session.user.isAdmin = token.isAdmin;
+                if(token.ownerId){
+                    session.user.ownerId = token.ownerId;
+                }
             }
             return session;
         },

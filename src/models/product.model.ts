@@ -7,6 +7,7 @@ interface IProduct extends Document {
   price: number;
   discount: number;
   description: string;
+  isDelivered?:boolean;
   owner: mongoose.Types.ObjectId; // Referencing the Owner model
 }
 
@@ -21,6 +22,7 @@ const productSchema: Schema<IProduct> = new Schema(
       required: [true, 'Price is required'], 
       min: [0, 'Price must be greater than 0']
     },
+    isDelivered:{type:Boolean, default: false},
     discount: { type: Number, default: 0 },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner' },
   },

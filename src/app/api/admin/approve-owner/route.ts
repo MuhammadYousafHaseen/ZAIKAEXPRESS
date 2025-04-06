@@ -18,6 +18,7 @@ export async function PATCH(request: Request) {
 
   try {
     // Parse the request body to get the ownerId to approve
+    //const response = await axios.patch('/api/approve-owner', { ownerId });
     const { ownerId } = await request.json();
     if (!ownerId) {
       return Response.json({ message: "Owner ID is required" }, { status: 400 });
