@@ -5,18 +5,18 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 export async function GET() {
-  await dbConnect();
+  
    // Optional: Admin authorization check (pseudo-code)
    const session = await getServerSession(authOptions);
+   //console.log(session)
    if (!session || session.user.isAdmin !== true) {
      return Response.json({ message: "Unauthorized" }, { status: 401 });
    }
+   await dbConnect();
 
-  // const { search } = request.query;
-  // const searchQuery = search ? { name: { $regex: search, $options: 'i' } } : {};
-  const owners = await Owner.find({ isApprovedOwner: false });
+  const owners = await Owner.find({}).select('name email phone address city isApprovedOwner').lean();
     if (!owners) {
-        return Response.json({success:false, message:"No Unapproved Owners found"},{status:404})
+        return Response.json({success:false, message:"No Owners found"},{status:404})
     }
-  return Response.json({success:true, message:"Unapproved Owners fetched Successfully", data:owners},{status:200})
+  return Response.json({success:true, message:"Owners fetched Successfully", owners:owners},{status:200})
 }

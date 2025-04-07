@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/user.model";
+import Product from "@/models/product.model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -21,16 +22,22 @@ export async function POST() {
       return Response.json({ error: "Cart is empty" }, { status: 400 });
     }
 
-    // Add all cart items to orders
+    // Add cart items to orders and clear the cart
     user.orders.push(...user.cart);
-
-    // Clear the cart
+    const orderedProductIds = [...user.cart];
     user.cart = [];
 
     await user.save();
 
-    return Response.json({ message: "Order placed successfully", orders: user.orders }, { status: 200 });
+    // Get full product details
+    const orderedProducts = await Product.find({ _id: { $in: orderedProductIds } });
+    //console.log(orderedProducts);
+    return Response.json({
+      message: "Order placed successfully",
+      orders: orderedProducts,
+    }, { status: 200 });
   } catch (error) {
-    return Response.json({ message:"Error in Placing The Order" + error }, { status: 500 });
+    console.error("Error placing order:", error);
+    return Response.json({ message: "Error in Placing The Order: " + error }, { status: 500 });
   }
 }

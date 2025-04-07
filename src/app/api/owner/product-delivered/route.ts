@@ -14,7 +14,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { productId } = await request.json();
+  const { productId, ownerId } = await request.json();
 
   if (!productId || !mongoose.Types.ObjectId.isValid(productId)) {
     return NextResponse.json({ message: 'Invalid product ID' }, { status: 400 });
@@ -27,7 +27,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ message: 'Product not found' }, { status: 404 });
     }
 
-    if (product.owner.toString() !== session.user.ownerId) {
+    if (product.owner.toString() !== ownerId) {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 

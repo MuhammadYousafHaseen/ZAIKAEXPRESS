@@ -71,6 +71,9 @@ const Page = () => {
           const ownerId = response.data.ownerId;
           // After login or registration
           localStorage.setItem("ownerId", ownerId!);
+          
+          document.cookie = `ownerId=${ownerId}; path=/; max-age=3600`; // 1 hour
+
 
       
       toast("Success!", {

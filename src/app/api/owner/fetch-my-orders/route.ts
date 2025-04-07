@@ -4,8 +4,9 @@ import Product from "@/models/product.model";
 import User from "@/models/user.model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
+import { NextRequest } from "next/server";
 
-export const GET = async () => {
+export async function POST( req:NextRequest) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -13,7 +14,11 @@ export const GET = async () => {
     return Response.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const ownerId = session.user.ownerId;
+  //const ownerId = session.user.ownerId;
+  const {ownerId} = await req.json();
+  if (!ownerId) {
+    return Response.json({ message: "Owner ID is required" }, { status: 400 });
+  }
 
   try {
     // Step 1: Get all products by the owner
@@ -26,7 +31,8 @@ export const GET = async () => {
       .populate({
         path: "orders",
         match: { _id: { $in: productIds } },
-        select: "name price image",
+        select: "name price image isDelivered",
+        options: { sort: { createdAt: -1 } }, // Sort by createdAt in descending order
       });
 
     return Response.json({ users: usersWithOrders });

@@ -13,16 +13,16 @@ export async function POST(req: NextRequest) {
 
   try {
     const owner = await Owner.findById(ownerId);
-    if (!owner) {
-      return NextResponse.json({ message: 'Owner not found' }, { status: 404 });
+    if (!owner || !owner.isApprovedOwner) {
+      return NextResponse.json({ message: 'Owner not found or already unapproved' }, { status: 404 });
     }
 
-    owner.isApprovedOwner = true;
+    owner.isApprovedOwner = false;
     await owner.save();
 
-    return NextResponse.json({ message: 'Owner approved successfully' }, { status: 200 });
+    return NextResponse.json({ message: 'Owner Unapproved successfully' }, { status: 200 });
   } catch (error) {
-    console.error('Error approving owner:', error);
-    return NextResponse.json({ message: 'Error approving owner' }, { status: 500 });
+    console.error('Error Unapproving owner:', error);
+    return NextResponse.json({ message: 'Error Unapproving owner' }, { status: 500 });
   }
 }

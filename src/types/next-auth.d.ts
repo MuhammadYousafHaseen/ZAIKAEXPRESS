@@ -15,7 +15,6 @@ declare module 'next-auth' {
             isVerified?:boolean;
             isAdmin?:boolean;
             name?:string;
-            ownerId?:string;
           } & DefaultSession['user']
     }
 }
@@ -25,7 +24,7 @@ declare module 'next-auth/jwt' {
         id?: string;
         isVerified?: boolean;
         name?: string;
-        isAdmin?: boolean;
+        isAdmin: boolean;
         ownerId?:string;
     }
 }

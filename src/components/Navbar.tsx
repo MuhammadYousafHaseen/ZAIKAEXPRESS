@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function Navbar() {
   const { data: session } = useSession();
   const user: User = session?.user as User;
+  //const userId :string = session?.user.id;
   const ownerId = typeof window !== "undefined" ? localStorage.getItem("ownerId") : null;
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
@@ -60,11 +61,12 @@ function Navbar() {
           {session ? (
             <div className="flex items-center space-x-4">
               <span className="text-sm font-medium">Welcome, {user?.name || user.email}</span>
+              <Link href="/" className="hover:text-blue-500 transition">Home</Link>
+              {user.isAdmin && <Link href="/admin-dashboard" className="hover:text-blue-500 transition">Admin Dashboard</Link>}
               {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition">Seller Dashboard</Link>}
-              <Link href="/dashboard" className="hover:text-blue-500 transition">Dashboard</Link>
-              <Link href="/user/profile" className="hover:text-blue-500 transition">Profile</Link>
-              <Link href="/user/cart" className="hover:text-blue-500 transition">cart</Link>
-              <Link href="/user/orders" className="hover:text-blue-500 transition">Orders</Link>
+              <Link href={`/dashboard/${user.id}`} className="hover:text-blue-500 transition">Dashboard</Link>
+          
+            
               <Button
                 onClick={() => signOut()}
                 className="px-4 py-2 w-20 h-6 text-center hover:cursor-pointer cursor-pointer bg-red-500 text-white rounded-md hover:bg-red-600 transition"
@@ -121,10 +123,11 @@ function Navbar() {
               {session ? (
                 <>
                   <span className="text-sm font-medium">Welcome, {user?.name || user?.email}</span>
-                  <Link href="/dashboard" className="hover:text-blue-500 transition">Dashboard</Link>
-                  <Link href="/user/profile" className="hover:text-blue-500 transition">Profile</Link>
-                  <Link href="/user/cart" className="hover:text-blue-500 transition">cart</Link>
-                  <Link href="/user/orders" className="hover:text-blue-500 transition">Orders</Link>
+                  <Link href="/" className="hover:text-blue-500 transition">Home</Link>
+                  {user.isAdmin && <Link href="/admin-dashboard" className="hover:text-blue-500 transition">Admin Dashboard</Link>}
+                  {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition">Seller Dashboard</Link>}
+                  <Link href={`/dashboard/${user.id}`} className="hover:text-blue-500 transition">Dashboard</Link>
+            
                   <Button
                     onClick={() => signOut()}
                     className="px-4 py-2 w-20 h-6 text-center hover:cursor-pointer cursor-pointer bg-red-500 text-white rounded-md hover:bg-red-600 transition"

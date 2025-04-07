@@ -2,10 +2,9 @@ import dbConnect from "@/lib/dbConnect";
 import User from "@/models/user.model";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { NextRequest } from "next/server";
 
-export async function POST(
-  { params }: { params: { ProductId: string } }
-) {
+export async function POST(req:NextRequest) {
   await dbConnect();
 
   // Get session from NextAuth to identify the authenticated user.
@@ -14,7 +13,8 @@ export async function POST(
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const productId = params.ProductId;
+  //const productId = params.ProductId;
+  const {productId} = await req.json();
   try {
     // Push the productId to the user's cart array.
     const updatedUser = await User.findByIdAndUpdate(

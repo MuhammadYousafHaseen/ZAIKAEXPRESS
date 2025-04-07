@@ -21,7 +21,8 @@ export async function POST( req:NextRequest) {
     if (!product) {
       return NextResponse.json({ message: 'Product not found' }, { status: 404 });
     }
-
+    //console.log(productId);
+    //console.log(product)
     const ownerId = product.owner.toString();
 
     // 2. Delete the product

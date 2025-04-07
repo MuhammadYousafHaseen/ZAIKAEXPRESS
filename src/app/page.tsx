@@ -6,22 +6,31 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import {toast} from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, PlusCircle} from 'lucide-react'
 
 type Product = {
-  id: number
+  _id: string
   name: string
   description: string
   image: string
   price: number
 }
+// interface Order {
+//   _id:string
+//   name:string
+//   price:number
+//   isDelivered:boolean
+
+// }
 
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([])
   const [visibleCount, setVisibleCount] = useState(20)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  //const [cart,setCart] = useState<Order[]>([])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,6 +49,18 @@ export default function HomePage() {
 
     fetchProducts()
   }, [])
+
+  const addToCart = async (productId: string) => {
+    try {
+       await axios.post('/api/user/add-to-cart', { productId })
+      //setCart(res.data.cart)
+      toast.success('Item added to cart')
+    } catch (err) {
+      console.error("Failed to add to cart ", err)
+      toast.error('Failed to add to cart')
+    }
+  }
+
 
   return (
     <main className="flex flex-col items-center justify-center px-4 md:px-12 py-10 space-y-20">
@@ -85,7 +106,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {products.slice(0, visibleCount).map((product) => (
-              <Card key={product.id} className="hover:scale-[1.02] transition-transform duration-200 ease-in-out">
+              <Card key={product._id} className="hover:scale-[1.02] transition-transform duration-200 ease-in-out">
                 <CardContent className="p-4 space-y-3">
                   <Image
                     src={product.image}
@@ -97,6 +118,10 @@ export default function HomePage() {
                   <CardTitle className="text-lg">{product.name}</CardTitle>
                   <p className="text-muted-foreground text-sm line-clamp-2">{product.description}</p>
                   <p className="font-semibold text-primary">₹{product.price}</p>
+                  <Button onClick={() => addToCart(product._id)} className="w-full gap-2">
+                    <PlusCircle size={16} />
+                    Add to Cart
+                  </Button>
                 </CardContent>
               </Card>
             ))}
