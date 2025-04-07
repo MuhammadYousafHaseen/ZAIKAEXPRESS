@@ -76,7 +76,7 @@ const Page = () => {
       toast("Success!", {
         description: response.data.message ?? "Your Seller account created Successfully",
       })
-      router.replace(`/seller-dashboard${ownerId}`)
+      router.replace(`/seller-dashboard/${ownerId}`)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       const errorMessage = axiosError.response?.data.message ?? "Error creating Seller account"

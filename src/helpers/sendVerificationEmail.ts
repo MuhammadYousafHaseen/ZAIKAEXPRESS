@@ -5,7 +5,7 @@ import VerificationEmail from "../../emails/verificationEmail";
 export async function sendVerificationEmail(email: string, username: string,  verifyCode: string): Promise<ApiResponse> {
      try {
         await resend.emails.send({
-            from: "onboarding.dev",
+            from: "onboarding@resend.dev",
             to: email,
             subject: "YourMessage | Verify your account",
             react: VerificationEmail({username:verifyCode,otp:username}),

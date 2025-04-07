@@ -7,6 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import FileUpload from '@/components/FileUpload';
+import { IKUploadResponse } from 'imagekitio-next/dist/types/components/IKUpload/props';
+import Image from 'next/image';
+
+
 
 interface Product {
   _id: string;
@@ -22,9 +27,10 @@ interface Product {
   };
 }
 
-const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
+const SellerDashboard = () => {
+  const ownerId = localStorage.getItem('ownerId');
   const { toast } = useToast();
-  const ownerId = params.ownerId;
+
 
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Product[]>([]);
@@ -44,10 +50,13 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`/api/products/${ownerId}`);
+      const res = await axios.post(`/api/owner/get-my-products`,{
+        ownerId
+      });
+      console.log(res);
       setProducts(res.data.products);
     } catch (err) {
-        console.error("Error loading Products",err)
+      console.error("Error loading Products", err);
       toast('Error loading products');
     }
   };
@@ -57,7 +66,7 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
       const res = await axios.get(`/api/orders/${ownerId}`);
       setOrders(res.data.orders);
     } catch (err) {
-        console.log("Error loading Orders",err)
+      console.log("Error loading Orders", err);
       toast('Error loading orders');
     }
   };
@@ -66,10 +75,14 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
     setNewProduct(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleImageUpload = (res: IKUploadResponse) => {
+    setNewProduct(prev => ({ ...prev, image: res.url }));
+  };
+
   const handleProductPost = async () => {
     try {
       setLoading(true);
-      await axios.post('/api/products/create', {
+      await axios.post('/api/owner/add-product', {
         ...newProduct,
         price: Number(newProduct.price),
         ownerId,
@@ -78,10 +91,21 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
       setNewProduct({ name: '', description: '', price: '', image: '' });
       fetchProducts();
     } catch (err) {
-        console.log("Error Posting Product", err)
+      console.log("Error Posting Product", err);
       toast('Failed to post product');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const removeProduct = async (productId: string) => {
+    try {
+      await axios.post(`/api/owner/remove-product/${productId}`,{productId});
+      toast('Product Removed');
+      fetchProducts();
+    } catch (err) {
+      console.log("Error Removing Product", err);
+      toast('Failed to remove product');
     }
   };
 
@@ -91,23 +115,31 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
       toast('Marked as delivered');
       fetchOrders();
     } catch (err) {
-        console.log("Failed to mark Delivered", err)
+      console.log("Failed to mark Delivered", err);
       toast('Failed to mark delivered');
     }
   };
 
   return (
-    <div className="p-4 max-w-5xl mx-auto space-y-10">
+    <div className="p-4 max-w-6xl mx-auto space-y-10">
       <h1 className="text-3xl font-bold text-center">Seller Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Post New Product</h2>
           <Input placeholder="Product Name" name="name" value={newProduct.name} onChange={handleInput} />
           <Textarea placeholder="Description" name="description" value={newProduct.description} onChange={handleInput} />
           <Input placeholder="Price" name="price" value={newProduct.price} onChange={handleInput} />
-          <Input placeholder="Image URL" name="image" value={newProduct.image} onChange={handleInput} />
-          <Button disabled={loading} onClick={handleProductPost}>
+          
+          {/* File Upload Component */}
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700 dark:text-gray-300">
+              Upload Product Image
+            </label>
+            <FileUpload onSuccess={handleImageUpload} fileType="image" />
+          </div>
+          
+          <Button disabled={loading} onClick={handleProductPost} className="w-full mt-4">
             {loading ? 'Posting...' : 'Post Product'}
           </Button>
         </div>
@@ -115,22 +147,24 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Your Products</h2>
           {products.map((prod) => (
-            <Card key={prod._id}>
-              <CardContent className="p-4">
+            <Card key={prod._id} className="p-4 flex flex-col space-y-2">
+              <Image src={prod.image} alt={prod.name} width={600} height={400} className="object-cover w-full h-40 rounded-lg" />
+              <CardContent>
                 <h3 className="font-bold text-lg">{prod.name}</h3>
                 <p>{prod.description}</p>
                 <p>${prod.price}</p>
+                <Button variant="destructive"  onClick={() => removeProduct(prod._id.toString())} className="mt-2 cursor-pointer">
+                  Remove Product
+                </Button>
               </CardContent>
             </Card>
           ))}
         </div>
-      </div>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Orders</h2>
-        {orders.map((order) => (
-          <Card key={order._id} className="border-green-500">
-            <CardContent className="p-4 space-y-2">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Orders</h2>
+          {orders.map((order) => (
+            <Card key={order._id} className="border-green-500 p-4 space-y-2">
               <h3 className="font-bold">{order.name}</h3>
               <p>${order.price}</p>
               <p>Status: {order.isDelivered ? 'Delivered' : 'Pending'}</p>
@@ -146,9 +180,9 @@ const SellerDashboard = ({ params }: { params: { ownerId: string } }) => {
                   Mark as Delivered
                 </Button>
               )}
-            </CardContent>
-          </Card>
-        ))}
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

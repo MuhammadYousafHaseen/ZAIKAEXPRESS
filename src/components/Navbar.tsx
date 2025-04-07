@@ -60,7 +60,7 @@ function Navbar() {
           {session ? (
             <div className="flex items-center space-x-4">
               <span className="text-sm font-medium">Welcome, {user?.name || user.email}</span>
-              {ownerId && <Link href="/seller-dashboard" className="hover:text-blue-500 transition">Seller Dashboard</Link>}
+              {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition">Seller Dashboard</Link>}
               <Link href="/dashboard" className="hover:text-blue-500 transition">Dashboard</Link>
               <Link href="/user/profile" className="hover:text-blue-500 transition">Profile</Link>
               <Link href="/user/cart" className="hover:text-blue-500 transition">cart</Link>
