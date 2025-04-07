@@ -52,7 +52,7 @@ export default function Footer() {
           <h3 className="text-md font-semibold mb-2">Get Involved</h3>
           <ul className="space-y-2 text-sm">
             <li><Link href="/become-seller">Become a Seller</Link></li>
-            <li><Link href="/careers">Careers</Link></li>
+            <li><Link href="/seller-dashboard">Seller Dashboard</Link></li>
             <li><Link href="/user/register">Register</Link></li>
             <li><Link href="/sign-in">Login</Link></li>
           </ul>
@@ -68,15 +68,15 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2">
               <PhoneCall className="w-4 h-4" />
-              +91 98765 43210
+              +92 321 8971071
             </li>
             <li className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              support@zaiqaexpress.com
+              technologistan0@gmail.com
             </li>
             <li className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              Mumbai, India
+              Punjab,Pakistan
             </li>
           </ul>
         </motion.div>
