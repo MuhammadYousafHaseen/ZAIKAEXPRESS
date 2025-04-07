@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function Navbar() {
   const { data: session } = useSession();
   const user: User = session?.user as User;
-  const ownerId = session?.user.ownerId;
+  const ownerId = typeof window !== "undefined" ? localStorage.getItem("ownerId") : null;
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
 

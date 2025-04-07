@@ -7,6 +7,7 @@ import { Mail, PhoneCall, MapPin } from "lucide-react"
 import Image from "next/image"
 
 export default function Footer() {
+  const ownerId = typeof window !== "undefined" ? localStorage.getItem("ownerId") : null;
   return (
     <footer className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-t dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
@@ -52,7 +53,7 @@ export default function Footer() {
           <h3 className="text-md font-semibold mb-2">Get Involved</h3>
           <ul className="space-y-2 text-sm">
             <li><Link href="/become-seller">Become a Seller</Link></li>
-            <li><Link href="/seller-dashboard">Seller Dashboard</Link></li>
+            <li><Link href={`/seller-dashboard/${ownerId}`}>Seller Dashboard</Link></li>
             <li><Link href="/user/register">Register</Link></li>
             <li><Link href="/sign-in">Login</Link></li>
           </ul>

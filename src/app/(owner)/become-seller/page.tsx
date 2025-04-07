@@ -60,16 +60,23 @@ const Page = () => {
             ...data,
             image: image, // Add the image URL here
           }
+
+          
       
           const response = await axios.post<ApiResponse>(
             '/api/owner/create-owner',
             payload
           )
+
+          const ownerId = response.data.ownerId;
+          // After login or registration
+          localStorage.setItem("ownerId", ownerId!);
+
       
       toast("Success!", {
         description: response.data.message ?? "Your Seller account created Successfully",
       })
-      router.replace(`/seller-dashboard`)
+      router.replace(`/seller-dashboard${ownerId}`)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       const errorMessage = axiosError.response?.data.message ?? "Error creating Seller account"
