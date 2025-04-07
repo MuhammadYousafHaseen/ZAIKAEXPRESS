@@ -12,16 +12,18 @@ export async function GET() {
   }
 
   try {
-    const user = await User.findById(session.user.id).populate("cart");
+    const user = await User.findById(session.user.id);
     if (!user) {
       return Response.json({ error: "User not found" }, { status: 404 });
     }
-
+    if(!user.orders){
+      return Response.json({message:"You have not placed any orders yet."},{status:400})
+    }
     return Response.json(
-      { cart: user.orders },
+      { order: user.orders },
       { status: 200 }
     );
   } catch (error) {
-    return Response.json({message:"Error Fetching Cart Items" + error}, { status: 500 });
+    return Response.json({message:"Error Fetching Order Items" + error}, { status: 500 });
   }
 }

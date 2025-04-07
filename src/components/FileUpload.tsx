@@ -20,7 +20,8 @@ export default function FileUpload({
   const [error, setError] = useState<string | null>(null);
 
   // ✅ ImageKit URL Endpoint (Replace with your actual URL)
-  const urlEndpoint = process.env.NEXT_PUBLIC_IMAGE_URL_ENDPOINT; // 🔹 Make sure this is correct
+  const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT; // 🔹 Make sure this is correct
+  const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 
   const onError = (err: { message: string }) => {
     console.log("Error", err);
@@ -75,6 +76,7 @@ export default function FileUpload({
     <div className="space-y-2">
       <IKUpload
         urlEndpoint={urlEndpoint} // ✅ Fix: Add this
+        publicKey={publicKey!} 
         fileName={fileType === "image" ? "image.jpg" : "video.mp4"}
         isPrivateFile={false}
         useUniqueFileName={true}

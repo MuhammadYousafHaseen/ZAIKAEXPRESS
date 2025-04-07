@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     try {
 
         const { name, email, password, phone, address, image, productsCategory, requestForApproval } = await request.json();
-        if (!name || !email || !password || !phone || !address || !productsCategory || !requestForApproval || !image) {
+        if (!name || !email || !password || !phone || !address || !productsCategory || !requestForApproval) {
             return Response.json(
                 {
                     success: false,
