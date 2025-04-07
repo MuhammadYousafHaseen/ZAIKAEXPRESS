@@ -55,7 +55,7 @@ export default function HomePage() {
         />
         <div className="text-center md:text-left space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Welcome to <span className="text-primary">ZAIQA EXPRESS</span>
+            Welcome to <span className="font-bold bg-gradient-to-r from-orange-500 via-red-500 to-yellow-400 bg-clip-text text-transparent">ZAIQA EXPRESS</span>
           </h1>
           <p className="text-muted-foreground text-lg">
             Craving your favorite food? We have got you covered. Explore the meals you love and get them delivered hot & fresh to your doorstep — fast and hassle-free.
