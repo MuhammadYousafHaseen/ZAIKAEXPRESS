@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
-import Order from "@/models/order.model";
+import User from "@/models/user.model";
+import Product from "@/models/product.model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -12,26 +13,26 @@ export async function GET() {
   }
 
   try {
-    // Find orders for this user in the Order collection
-    const orders = await Order.find({ user: session.user.id })
-      .populate("products", "name price image isDelivered") // Populate the 'products' field with selected fields.
-      .lean();
-
-    if (!orders || orders.length === 0) {
-      return Response.json(
-        { message: "You have not placed any orders yet." },
-        { status: 400 }
-      );
+    const user = await User.findById(session.user.id);
+    if (!user) {
+      return Response.json({ error: "User not found" }, { status: 404 });
     }
 
+    if (!user.orders || user.orders.length === 0) {
+      return Response.json({ message: "You have not placed any orders yet." }, { status: 400 });
+    }
+
+    // Fetch full product details for each order
+    const orderedProducts = await Product.find({ _id: { $in: user.orders } });
+
     return Response.json(
-      { orders },
+      { orders: orderedProducts },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching orders:", error);
+    console.error("Error fetching order items:", error);
     return Response.json(
-      { message: "Error fetching orders: "},
+      { message: "Error fetching order items: " + error },
       { status: 500 }
     );
   }

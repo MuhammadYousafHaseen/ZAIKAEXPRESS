@@ -8,7 +8,7 @@ export async function GET() {
     await dbConnect();
 
     try {
-        const products = await Product.find({},"name image description price discount owner").sort({ createdAt: -1 }).populate("owner", "name email phone address city country state").lean();
+        const products = await Product.find({},"name image description price discount owner").sort({ createdAt: -1 }).lean();
         if(!products) {
             return NextResponse.json({ error: "No products found" }, { status: 404 });
         }
