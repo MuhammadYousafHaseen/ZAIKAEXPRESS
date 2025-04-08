@@ -24,7 +24,7 @@ const productSchema: Schema<IProduct> = new Schema(
     },
     isDelivered:{type:Boolean, default: false},
     discount: { type: Number, default: 0 },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner' },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner', required: true },
   },
   { timestamps: true }
 );
