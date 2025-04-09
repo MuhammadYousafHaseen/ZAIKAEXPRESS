@@ -70,8 +70,7 @@ const Page = () => {
 
           
       
-          const response = await axios.post<ApiResponse>(
-            '/api/owner/create-owner',
+          const response = await axios.post<ApiResponse>('/api/owner/create-owner',
             payload
           )
 
