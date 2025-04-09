@@ -44,10 +44,10 @@ export default function Footer() {
         >
           <h3 className="text-md font-semibold mb-2">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/about">About Us</Link></li>
-            <li><Link href="/privacy-policy">Privacy Policy</Link></li>
-            <li><Link href="/faq">FAQs</Link></li>
-            <li><Link href="/contact">Contact</Link></li>
+            <li><Link href="/">About Us</Link></li>
+            <li><Link href="/">Privacy Policy</Link></li>
+            <li><Link href="/">FAQs</Link></li>
+            <li><Link href="/">Contact</Link></li>
           </ul>
         </motion.div>
 
@@ -61,7 +61,7 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li><Link href="/become-seller">Become a Seller</Link></li>
             <li><Link href={`/seller-dashboard/${ownerId}`}>Seller Dashboard</Link></li>
-            <li><Link href="/user/register">Register</Link></li>
+            <li><Link href="/sign-up">Register</Link></li>
             <li><Link href="/sign-in">Login</Link></li>
           </ul>
         </motion.div>

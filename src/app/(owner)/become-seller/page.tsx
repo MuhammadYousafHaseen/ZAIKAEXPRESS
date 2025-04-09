@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { ownerSchema } from "@/schemas/ownerShema"
@@ -28,6 +28,7 @@ import Image from "next/image"
 
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [ownerId, setOwnerId] = useState<string | null>(null);
   const [image, setImage] = useState<string | null>(null)
   const { toast } = useToast()
   const router = useRouter()
@@ -48,6 +49,12 @@ const Page = () => {
     }
   })
 
+   useEffect(() => {
+      const storedOwnerId = localStorage.getItem('ownerId');
+      if (storedOwnerId) {
+        setOwnerId(storedOwnerId);
+      }
+    }, []);
   const handleImageUpload = (res: IKUploadResponse) => {
     setImage(res.url)
     console.log(res.url)
@@ -272,7 +279,7 @@ const Page = () => {
                   Please Wait
                 </>
               ) : (
-                "Sign Up"
+                "Register Here"
               )}
             </Button>
           </form>
@@ -281,7 +288,7 @@ const Page = () => {
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-400">
             Already a Seller?{" "}
-            <Link href="/seller-dashboard" className="text-blue-600 hover:underline dark:text-blue-400">
+          <Link href={`/seller-dashboard/${ownerId}`} className="text-blue-600 hover:underline cursor-pointer dark:text-blue-400">
               Seller-Dashboard
             </Link>
           </p>
