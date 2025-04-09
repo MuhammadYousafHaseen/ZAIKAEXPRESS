@@ -181,7 +181,7 @@ const SellerDashboard = () => {
                 <CardContent>
                   <h3 className="font-bold text-lg">{prod.name}</h3>
                   <p>{prod.description}</p>
-                  <p>${prod.price}</p>
+                  <p>PKR:{prod.price}</p>
                   <Button variant="destructive" onClick={() => removeProduct(prod._id)} className="cursor-pointer mt-2">
                     Remove Product
                   </Button>
@@ -200,7 +200,7 @@ const SellerDashboard = () => {
             orders.map((order) => (
               <Card key={order._id} className="border-green-500 p-4 space-y-2">
                 <h3 className="font-bold">{order.name}</h3>
-                <p>${order.price}</p>
+                <p>PKR:{order.price}</p>
                 <p>Status: {order.isDelivered ? 'Delivered' : 'Pending'}</p>
                 {order.purchaser && (
                   <div className="text-sm text-gray-600">

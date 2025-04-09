@@ -8,7 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Loader2, CheckCircle2, Crown, Truck } from 'lucide-react';
 import { toast } from 'sonner';
+import { useSession } from 'next-auth/react'
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Owner {
     _id: string;
@@ -44,6 +46,8 @@ interface User {
 
 
 const AdminDashboard = () => {
+    const { data: session } = useSession()
+    const userId = session?.user?.id as string
     const [owners, setOwners] = useState<Owner[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
@@ -106,9 +110,7 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleOrderTracking = () => {
-        window.location.href = '/admin/order-tracking';
-    };
+  
 
     return (
         <div className="p-6 max-w-7xl mx-auto">
@@ -206,7 +208,7 @@ const AdminDashboard = () => {
                                                 <Image src={item.image} alt={item.name} width={50} height={50} />
                                                 <div>
                                                     <p>{item.name}</p>
-                                                    <p>Price: {item.price}</p>
+                                                    <p>Price:PKR-{item.price}</p>
                                                     <p>Status: {item.isDelivered ? 'Delivered' : 'Pending'}</p>
                                                 </div>
                                                 </div>
@@ -220,9 +222,11 @@ const AdminDashboard = () => {
                     <Separator />
 
                     <div className="text-center">
-                        <Button onClick={handleOrderTracking} className="mt-6">
+                        <Link href={`/track-parcel/${userId}`}>
+                        <Button  className="mt-6">
                             <Truck className="cursor-pointer w-4 h-4 mr-2" /> Track Orders
                         </Button>
+                        </Link>
                     </div>
                 </div>
             )}

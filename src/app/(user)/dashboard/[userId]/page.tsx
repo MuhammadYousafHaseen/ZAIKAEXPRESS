@@ -167,7 +167,7 @@ const UserDashboard = () => {
             {cart.length ? (
               cart.map((item) => (
                 <div key={item._id} className="flex justify-between items-center py-2 border-b">
-                  <span>{item.name} - ${item.price}</span>
+                  <span>{item.name} - PKR:{item.price}</span>
                   <Button variant="destructive" size="sm" onClick={() => removeItemFromCart(item._id)}>
                     Remove
                   </Button>
@@ -200,7 +200,7 @@ const UserDashboard = () => {
                   <Image src={product.image} alt={product.name} width={600} height={400} className="w-full h-40 object-cover rounded-md" />
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <p className="text-muted-foreground text-sm">{product.description}</p>
-                  <p className="text-primary font-bold">${product.price}</p>
+                  <p className="text-primary font-bold">PKR:{product.price}</p>
                   <Button onClick={() => addToCart(product._id)} className="w-full mt-2 gap-2">
                     <PlusCircle size={16} />
                     Add to Cart
@@ -220,7 +220,7 @@ const UserDashboard = () => {
             {delivered.length ? (
               delivered.map((order) => (
                 <div key={order._id} className="border-b py-2">
-                  <p>{order.name} - ${order.price}</p>
+                  <p>{order.name} - PKR:{order.price}</p>
                 </div>
               ))
             ) : (
@@ -235,7 +235,7 @@ const UserDashboard = () => {
             {pending.length ? (
               pending.map((order) => (
                 <div key={order._id} className="border-b py-2">
-                  <p>{order.name} - ${order.price}</p>
+                  <p>{order.name} - PKR:{order.price}</p>
                   <p className="text-sm text-gray-500">Description: {order.description || 'N/A'}</p>
                 </div>
               ))
