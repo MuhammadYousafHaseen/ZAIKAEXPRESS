@@ -93,7 +93,7 @@ export async function POST(request: Request) {
                 isApprovedOwner: false
             })
             await newOwner.save();
-            const ownerId:string = newOwner._id.toString();
+            const ownerId = newOwner._id?.toString();
             return Response.json({ success: true,data:newOwner, ownerId, message: "Owner registered successfully. Please wait for admin approval" }, { status: 200 })
         }
 

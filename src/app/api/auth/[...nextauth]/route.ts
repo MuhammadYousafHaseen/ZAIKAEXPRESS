@@ -5,6 +5,7 @@ import dbConnect from "@/lib/dbConnect";
 import bcrypt from 'bcryptjs';
 import { AuthOptions } from "next-auth";
 
+
 // Use the User type from NextAuth (or define a custom one that matches NextAuth's expectations)
 interface User {
     id: string;

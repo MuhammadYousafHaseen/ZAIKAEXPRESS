@@ -1,13 +1,20 @@
 "use client"
 
 import Link from "next/link"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Separator } from "@/components/ui/separator"
 import { Mail, PhoneCall, MapPin } from "lucide-react"
 import Image from "next/image"
 
 export default function Footer() {
-  const ownerId = typeof window !== "undefined" ? localStorage.getItem("ownerId") : null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Get the ownerId only if the component is mounted.
+  const ownerId = mounted ? localStorage.getItem("ownerId") : null;
   return (
     <footer className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-t dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
