@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  target: 'serverless',
   images: {
     remotePatterns: [
       {
