@@ -17,7 +17,7 @@ app.prepare().then(() => {
 
   const io = new Server(httpServer, {
     cors: {
-      origin: ["https://zaikaexpress-yousaf-haseens-projects.vercel.app","https://aimsgedu.online", "http://localhost:3000"],
+      origin: ["https://zaikaexpress-yousaf-haseens-projects.vercel.app","https://zaikaexpress-yousaf-haseens-projects.vercel.app/socket.io/?EIO=4&transport=polling","https://aimsgedu.online", "http://localhost:3000"],
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH", "CONNECT"],
     },
