@@ -37,7 +37,7 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center py-4">
 
         {/* Logo Section */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2 cursor-pointer">
           <motion.img
             src="/logo.png"
             alt="Zaiqa Logo"
@@ -47,7 +47,7 @@ function Navbar() {
             transition={{ duration: 0.5 }}
           />
           <motion.div
-            className="text-2xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-yellow-400 bg-clip-text text-transparent cursor-pointer"
+            className=" text-2xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-yellow-400 bg-clip-text text-transparent cursor-pointer"
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           >
@@ -61,10 +61,10 @@ function Navbar() {
           {session ? (
             <div className="flex items-center space-x-4">
               <span className="text-sm font-medium">Welcome, {user?.name || user.email}</span>
-              <Link href="/" className="hover:text-blue-500 transition">Home</Link>
-              {user.isAdmin && <Link href="/admin-dashboard" className="hover:text-blue-500 transition">Admin Dashboard</Link>}
-              {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition">Seller Dashboard</Link>}
-              <Link href={`/dashboard/${user.id}`} className="hover:text-blue-500 transition">Dashboard</Link>
+              <Link href="/" className="hover:text-blue-500 transition cursor-pointer">Home</Link>
+              {user.isAdmin && <Link href="/admin-dashboard" className="hover:text-blue-500 transition cursor-pointer">Admin Dashboard</Link>}
+              {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition cursor-pointer">Seller Dashboard</Link>}
+              <Link href={`/dashboard/${user.id}`} className="hover:text-blue-500 transition cursor-pointer">Dashboard</Link>
           
             
               <Button
@@ -76,10 +76,10 @@ function Navbar() {
             </div>
           ) : (
             <div className="flex space-x-4">
-              <Link href="/sign-in" className="hover:text-blue-500 transition">Sign In</Link>
+              <Link href="/sign-in" className="hover:text-blue-500 transition cursor-pointer">Sign In</Link>
               <Link
                 href="/sign-up"
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition cursor-pointer"
               >
                 Sign Up
               </Link>
@@ -91,7 +91,7 @@ function Navbar() {
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleTheme}
-          className="text-gray-700 dark:text-white  focus:outline-none"
+          className="text-gray-700 dark:text-white  focus:outline-none cursor-pointer"
         >
           {theme === "dark" ? (
             <Sun className="h-6 w-6 text-yellow-400" />
@@ -104,7 +104,7 @@ function Navbar() {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden block text-gray-700 dark:text-white focus:outline-none"
+          className="md:hidden block text-gray-700 dark:text-white focus:outline-none cursor-pointer"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -123,10 +123,10 @@ function Navbar() {
               {session ? (
                 <>
                   <span className="text-sm font-medium">Welcome, {user?.name || user?.email}</span>
-                  <Link href="/" className="hover:text-blue-500 transition">Home</Link>
-                  {user.isAdmin && <Link href="/admin-dashboard" className="hover:text-blue-500 transition">Admin Dashboard</Link>}
-                  {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition">Seller Dashboard</Link>}
-                  <Link href={`/dashboard/${user.id}`} className="hover:text-blue-500 transition">Dashboard</Link>
+                  <Link href="/" className="hover:text-blue-500 transition cursor-pointer">Home</Link>
+                  {user.isAdmin && <Link href="/admin-dashboard" className="hover:text-blue-500 transition cursor-pointer">Admin Dashboard</Link>}
+                  {ownerId && <Link href={`seller-dashboard/${ownerId}`} className="hover:text-blue-500 transition cursor-pointer">Seller Dashboard</Link>}
+                  <Link href={`/dashboard/${user.id}`} className="hover:text-blue-500 transition cursor-pointer">Dashboard</Link>
             
                   <Button
                     onClick={() => signOut()}
@@ -137,10 +137,10 @@ function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link href="/sign-in" className="hover:text-blue-500 transition">Sign In</Link>
+                  <Link href="/sign-in" className="hover:text-blue-500 transition cursor-pointer">Sign In</Link>
                   <Link
                     href="/sign-up"
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition cursor-pointer"
                   >
                     Sign Up
                   </Link>

@@ -95,14 +95,14 @@ function VerifyAccount() {
             />
 
             {/* Submit Button */}
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all">
+            <Button type="submit" className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all">
               Verify Account
             </Button>
 
             {/* Resend Link */}
             <p className="text-sm text-center text-gray-500 dark:text-gray-400">
               Didn’t receive a code?{" "}
-              <span className="text-blue-600 dark:text-blue-400 cursor-pointer hover:underline">Resend Code</span>
+              <span className="text-blue-600  dark:text-blue-400 cursor-pointer hover:underline">Resend Code</span>
             </p>
           </form>
         </Form>

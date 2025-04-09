@@ -150,7 +150,7 @@ const UserDashboard = () => {
                 <p><strong>Name:</strong> {user.name}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 <p><strong>Address:</strong> {user.address}</p>
-                <Button variant="outline" className="mt-2">Edit Profile</Button>
+                <Button variant="outline" className="mt-2 cursor-pointer">Edit Profile</Button>
               </>
             ) : (
               <p>Loading profile...</p>
@@ -166,9 +166,9 @@ const UserDashboard = () => {
             </h2>
             {cart.length ? (
               cart.map((item) => (
-                <div key={item._id} className="flex justify-between items-center py-2 border-b">
+                <div key={item._id} className="flex justify-between cursor-pointer items-center py-2 border-b">
                   <span>{item.name} - PKR:{item.price}</span>
-                  <Button variant="destructive" size="sm" onClick={() => removeItemFromCart(item._id)}>
+                  <Button variant="destructive" size="sm" className='cursor-pointer' onClick={() => removeItemFromCart(item._id)}>
                     Remove
                   </Button>
                 </div>
@@ -177,7 +177,7 @@ const UserDashboard = () => {
               <p>Your cart is empty.</p>
             )}
             {cart.length > 0 && (
-              <Button className="mt-4 w-full" onClick={placeOrder}>
+              <Button className="mt-4 w-full cursor-pointer" onClick={placeOrder}>
                 Place Order
               </Button>
             )}
@@ -201,7 +201,7 @@ const UserDashboard = () => {
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <p className="text-muted-foreground text-sm">{product.description}</p>
                   <p className="text-primary font-bold">PKR:{product.price}</p>
-                  <Button onClick={() => addToCart(product._id)} className="w-full mt-2 gap-2">
+                  <Button onClick={() => addToCart(product._id)} className="w-full mt-2 gap-2 cursor-pointer">
                     <PlusCircle size={16} />
                     Add to Cart
                   </Button>
@@ -249,7 +249,7 @@ const UserDashboard = () => {
       {/* Track Parcel */}
       <div className="text-center mt-6">
         <Link href={`/track-parcel/${userId}`}>
-          <Button className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white gap-2">
+          <Button className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white gap-2 cursor-pointer">
             <Truck size={20} />
             Track Your Parcel
           </Button>

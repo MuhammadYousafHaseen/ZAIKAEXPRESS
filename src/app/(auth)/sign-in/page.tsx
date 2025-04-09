@@ -116,7 +116,7 @@ const Page = () => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full cursor-pointer flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <>
@@ -133,7 +133,7 @@ const Page = () => {
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-400">
             Does not have an account?{" "}
-            <Link href="/sign-up" className="text-blue-600 hover:underline dark:text-blue-400">
+            <Link href="/sign-up" className="text-blue-600 hover:underline cursor-pointer dark:text-blue-400">
               Sign Up
             </Link>
           </p>

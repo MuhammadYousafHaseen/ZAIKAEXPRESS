@@ -180,7 +180,7 @@ const AdminDashboard = () => {
                                             <Button
                                                 size="sm"
                                                 onClick={() => promoteToAdmin(user._id, 'user')}
-                                                className="w-full"
+                                                className="w-full cursor-pointer"
                                             >
                                                 <Crown className="w-4 h-4 mr-2" /> Promote to Admin
                                             </Button>
