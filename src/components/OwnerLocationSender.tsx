@@ -5,7 +5,7 @@ import io from "socket.io-client";
 
 // Initialize socket connection
 const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
-  transports: ["websocket"],
+  transports: ["websocket", "polling"],
   withCredentials: true,
 });
 

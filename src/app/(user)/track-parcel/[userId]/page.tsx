@@ -14,7 +14,7 @@ interface Location {
   lng: number;
 }
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, { autoConnect: true });
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, { autoConnect: true, transports: ["websocket", "polling"], withCredentials: true });
 
 export default function TrackParcelPage() {
   const { userId } = useParams();
@@ -22,7 +22,7 @@ export default function TrackParcelPage() {
   // State for ownerId from localStorage (set once on mount)
   const [ownerId, setOwnerId] = useState<string | null>(null);
   // State for tracking the owner's live location
-const [ownerLocation, setOwnerLocation] = useState<Location>({ lat: 0, lng: 0 });
+  const [ownerLocation, setOwnerLocation] = useState<Location>({ lat: 0, lng: 0 });
 
   // State for the user's location
   const [userLocation, setUserLocation] = useState<Location>({ lat: 0, lng: 0 });
