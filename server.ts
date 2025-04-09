@@ -21,8 +21,10 @@ app.prepare().then(() => {
         "https://zaikaexpress-git-main-yousaf-haseens-projects.vercel.app",
         "https://aimsgedu.online", "http://localhost:3000"],
       credentials: true,
+      
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH", "CONNECT"],
     },
+    transports: ['websocket', 'polling'],
   });
   
 
