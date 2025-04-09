@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +24,7 @@ interface Product {
     address: string;
   };
 }
+
 interface User {
   name: string;
   email: string;
@@ -53,15 +54,9 @@ const SellerDashboard = () => {
     }
   }, []);
 
-  // Fetch data once ownerId is set
-  // useEffect(() => {
-  //   if (ownerId) {
-  //     fetchProducts();
-  //     fetchOrders();
-  //   }
-  // }, [ownerId]);
-
-  const fetchProducts = async () => {
+  // Fetch products and orders once ownerId is set
+  const fetchProducts = useCallback(async () => {
+    if (!ownerId) return;
     try {
       const res = await axios.post(`/api/owner/get-my-products`, { ownerId });
       setProducts(res.data.products || []);
@@ -69,9 +64,10 @@ const SellerDashboard = () => {
       console.error('Error loading Products', err);
       toast('Error loading products');
     }
-  };
+  }, [ownerId, toast]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
+    if (!ownerId) return;
     try {
       const res = await axios.post(`/api/owner/fetch-my-orders`, { ownerId });
       const users = res.data.users || [];
@@ -91,10 +87,12 @@ const SellerDashboard = () => {
       console.log('Error loading Orders', err);
       toast('Error loading orders');
     }
-  };
-  fetchProducts();
-  fetchOrders();
-  
+  }, [ownerId, toast]);
+
+  useEffect(() => {
+    fetchProducts();
+    fetchOrders();
+  }, [fetchProducts, fetchOrders]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -105,6 +103,7 @@ const SellerDashboard = () => {
   };
 
   const handleProductPost = async () => {
+    if (!ownerId) return;
     try {
       setLoading(true);
       await axios.post('/api/owner/add-product', {
@@ -135,6 +134,7 @@ const SellerDashboard = () => {
   };
 
   const markAsDelivered = async (productId: string) => {
+    if (!ownerId) return;
     try {
       await axios.patch(`/api/owner/product-delivered`, { productId, ownerId });
       toast('Marked as delivered');

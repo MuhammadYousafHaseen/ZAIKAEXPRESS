@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/card'
@@ -16,7 +16,7 @@ interface Order {
   price: number
   isDelivered: boolean
   estimatedDelivery?: string
-  description?:string
+  description?: string
 }
 
 interface User {
@@ -43,73 +43,66 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // useEffect(() => {
-  //   if (!userId) return
-  //   fetchUser()
-  //   fetchOrders()
-  //   fetchCart()
-  //   fetchProducts()
-  // }, [userId])
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       const res = await axios.post(`/api/user/me`, { userId })
-      const user = await res.data;
-      //console.log(user)
-      setUser(user);
-      //console.log(res.data)
-      //console.log(res.data.user)
+      setUser(res.data)
     } catch (err) {
-        console.error("Failed to fetch User", err)
+      console.error("Failed to fetch User", err)
       toast.error('Failed to load user')
     }
-  }
-  fetchUser();
-  const fetchOrders = async () => {
+  }, [userId])
+
+  const fetchOrders = useCallback(async () => {
     try {
       const res = await axios.get('/api/user/get-my-orders')
       setOrders(res.data.orders)
     } catch (err) {
-        console.error("Failed to load orders", err)
+      console.error("Failed to load orders", err)
       toast.error('Failed to load orders')
     }
-  }
-  fetchOrders();
+  }, [])
 
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     try {
       const res = await axios.get('/api/user/get-my-cart')
       setCart(res.data.cart)
     } catch (err) {
-        console.error("Failed to cart Items", err)
+      console.error("Failed to load cart", err)
       toast.error('Failed to load cart')
     }
-  }
-  fetchCart();
+  }, [])
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true)
     try {
       const res = await axios.get('/api/get-all-products')
       setProducts(res.data.products)
       setError(null)
     } catch (err) {
-        console.error("Failed to Products", err)
+      console.error("Failed to load products", err)
       setError('Failed to load products. Please try again later.')
     } finally {
       setLoading(false)
     }
-  }
-  fetchProducts();
+  }, [])
+
+  useEffect(() => {
+    if (userId) {
+      fetchUser()
+      fetchOrders()
+      fetchCart()
+      fetchProducts()
+    }
+  }, [userId, fetchUser, fetchOrders, fetchCart, fetchProducts])
 
   const addToCart = async (productId: string) => {
     try {
       const res = await axios.post('/api/user/add-to-cart', { productId })
-      
       setCart(res.data.cart)
       toast.success('Item added to cart')
     } catch (err) {
-        console.error("Failed to add to cart ", err)
+      console.error("Failed to add to cart", err)
       toast.error('Failed to add to cart')
     }
   }
@@ -117,11 +110,10 @@ const UserDashboard = () => {
   const removeItemFromCart = async (productId: string) => {
     try {
       await axios.post(`/api/user/remove-from-cart`, { productId })
-      console.log(productId);
       toast.success('Item removed from cart')
       fetchCart()
     } catch (err) {
-        console.error("Failed to remove from cart", err)
+      console.error("Failed to remove from cart", err)
       toast.error('Failed to remove item')
     }
   }
@@ -133,7 +125,7 @@ const UserDashboard = () => {
       fetchOrders()
       fetchCart()
     } catch (err) {
-        console.error("Failed to place order", err)
+      console.error("Failed to place order", err)
       toast.error('Failed to place order')
     }
   }
@@ -176,7 +168,7 @@ const UserDashboard = () => {
               cart.map((item) => (
                 <div key={item._id} className="flex justify-between items-center py-2 border-b">
                   <span>{item.name} - ${item.price}</span>
-                  <Button variant="destructive" size="sm" className='cursor-pointer' onClick={() => removeItemFromCart(item._id)}>
+                  <Button variant="destructive" size="sm" onClick={() => removeItemFromCart(item._id)}>
                     Remove
                   </Button>
                 </div>
@@ -185,7 +177,7 @@ const UserDashboard = () => {
               <p>Your cart is empty.</p>
             )}
             {cart.length > 0 && (
-              <Button className="cursor-pointer mt-4 w-full" onClick={placeOrder}>
+              <Button className="mt-4 w-full" onClick={placeOrder}>
                 Place Order
               </Button>
             )}
@@ -205,11 +197,11 @@ const UserDashboard = () => {
             {products.map((product) => (
               <Card key={product._id} className="hover:shadow-lg transition-all">
                 <CardContent className="p-4 space-y-2">
-                  <Image src={product.image} alt={product.name}width={600} height={400} className="w-full h-40 object-cover rounded-md" />
+                  <Image src={product.image} alt={product.name} width={600} height={400} className="w-full h-40 object-cover rounded-md" />
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <p className="text-muted-foreground text-sm">{product.description}</p>
                   <p className="text-primary font-bold">${product.price}</p>
-                  <Button onClick={() => addToCart(product._id)} className="cursor-pointer w-full gap-2">
+                  <Button onClick={() => addToCart(product._id)} className="w-full mt-2 gap-2">
                     <PlusCircle size={16} />
                     Add to Cart
                   </Button>
@@ -257,7 +249,7 @@ const UserDashboard = () => {
       {/* Track Parcel */}
       <div className="text-center mt-6">
         <Link href={`/track-parcel/${userId}`}>
-          <Button className=" cursor-pointer bg-gradient-to-r from-indigo-500 to-blue-600 text-white gap-2">
+          <Button className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white gap-2">
             <Truck size={20} />
             Track Your Parcel
           </Button>
