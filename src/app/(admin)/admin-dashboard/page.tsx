@@ -56,6 +56,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         fetchData();
         getOrders(); // Fetch orders when the component mounts
+        
     }, []);
 
     const fetchData = async () => {
