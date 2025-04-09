@@ -16,7 +16,8 @@ export interface IUser extends Document {
   verifyCode: string;
   verifyCodeExpiry: Date;
   cart: mongoose.Types.ObjectId[];
-  orders: mongoose.Types.ObjectId[]; // You can define a specific type if needed for orders
+  orders: mongoose.Types.ObjectId[];
+  liveLocation:{ lat:number, lng:number} // You can define a specific type if needed for orders
 }
 
 // Defining the User schema
@@ -53,6 +54,11 @@ const userSchema: Schema<IUser> = new Schema(
         ref: "Product",
       }
     ],
+    liveLocation: {
+      lat: { type: Number, default: 0 },
+      lng: { type: Number, default: 0 },
+    },
+    
   },
   { timestamps: true }
 );

@@ -11,7 +11,8 @@ interface IOwner extends Document {
   requestForApproval?:string,
   password: string;
   image?: string;
-  products: mongoose.Types.ObjectId[]; // Array of product IDs, referencing Product model
+  products: mongoose.Types.ObjectId[]; 
+  liveLocation:{ lat:number, lng:number} // Array of product IDs, referencing Product model
 }
 
 // Defining the owner schema
@@ -29,6 +30,10 @@ const ownerSchema: Schema<IOwner> = new Schema(
     products: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'Product' } // Array of product IDs referencing Product
     ],
+    liveLocation: {
+      lat: { type: Number, default: 0 },
+      lng: { type: Number, default: 0 },
+    },
   },
   { timestamps: true }
 );
