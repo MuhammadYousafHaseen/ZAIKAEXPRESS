@@ -12,8 +12,9 @@ export async function POST(request: Request) {
     try {
         // Parse the incoming JSON data
         const data = await request.json();
+        //console.log(data);
         const { name, email, password, phone, address, image, productsCategory, requestForApproval } = data;
-
+        //console.log(name,email,password,phone,address,image,productsCategory,requestForApproval);
         // Validate required fields
         if (!name || !email || !password || !phone || !address || !productsCategory || !requestForApproval) {
             return Response.json(
