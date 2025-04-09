@@ -79,7 +79,7 @@ const AdminDashboard = () => {
 
     const approveOwner = async (ownerId: string) => {
         try {
-            await axios.put('/api/admin/approve-owner', { ownerId });
+            await axios.post('/api/admin/approve-owner', { ownerId });
             toast.success('Owner approved successfully');
             fetchData();
         } catch (err) {
