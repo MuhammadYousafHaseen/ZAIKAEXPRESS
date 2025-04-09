@@ -37,7 +37,7 @@ const Page = () => {
    const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues:{
-      identifier:'',
+      email:'',
       password:'',
     }
    })
@@ -46,7 +46,7 @@ const Page = () => {
      setIsSubmitting(true)
      const result =  await signIn('credentials',{
       redirect:false,
-      identifier: data.identifier,
+      email: data.email,
       password: data.password,
      })
      if(result?.error){
@@ -77,7 +77,7 @@ const Page = () => {
             
             <FormField
               control={form.control}
-              name="identifier"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
