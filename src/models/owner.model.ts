@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-// Defining the Owner interface
+// Defining the Owner 
 interface IOwner extends Document {
   name: string;
   email: string;
