@@ -14,7 +14,7 @@ interface Location {
   lng: number;
 }
 
-const socket = io("https://your-socket-server.onrender.com", { autoConnect: true });
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, { autoConnect: true });
 
 export default function TrackParcelPage() {
   const { userId } = useParams();

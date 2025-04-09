@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import io from "socket.io-client";
 
 // Initialize socket connection
-const socket = io("https://your-socket-server.onrender.com", {
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
   transports: ["websocket"],
   withCredentials: true,
 });
