@@ -1,4 +1,3 @@
-// src/app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/models/user.model";
@@ -6,16 +5,21 @@ import dbConnect from "@/lib/dbConnect";
 import bcrypt from 'bcryptjs';
 import { AuthOptions } from "next-auth";
 
+// Use the User type from NextAuth (or define a custom one that matches NextAuth's expectations)
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    isAdmin: boolean;
+    isVerified: boolean;
+}
 
 interface Credentials {
-    identifier: string;
+    email: string;
     password: string;
 }
 
-
-
 export const authOptions: AuthOptions = {
-
     providers: [
         CredentialsProvider({
             id: "credentials",
@@ -24,19 +28,18 @@ export const authOptions: AuthOptions = {
                 email: { label: "Email", type: "email", placeholder: "email" },
                 password: { label: "Password", type: "password", placeholder: "password" },
             },
-            async authorize(credentials: Credentials | undefined): Promise<any> {
-                //console.log(credentials);
+            async authorize(credentials: Credentials | undefined): Promise<User | null> {
                 if (!credentials) return null;
+
                 await dbConnect();
                 try {
-                    const email = credentials.identifier?.trim().toLowerCase();
-                    // console.log(email)
+                    const email = credentials.email.trim().toLowerCase();
+                    const user = await User.findOne({ email: email }).lean().exec();
 
-                    const user = await User.findOne({ email: email });
-                    //console.log(user)
                     if (!user) {
                         throw new Error("User not found with this email");
                     }
+
                     if (!user.isVerified) {
                         throw new Error("User not verified yet! Please verify your email first");
                     }
@@ -45,28 +48,30 @@ export const authOptions: AuthOptions = {
                     if (!isPasswordCorrect) {
                         throw new Error("Invalid password");
                     }
-                    return user;
+
+                    // Return user object that matches NextAuth's User type
+                    return {
+                        id: user._id.toString(),
+                        name: user.name,
+                        email: user.email,
+                        isAdmin: user.isAdmin,
+                        isVerified: user.isVerified,
+                    };
                 } catch (error) {
-                    console.log("Error in authorizing user", error);
-                    throw new Error("Invalid Credentials" + error);
+                    console.error("Error in authorizing user", error);
+                    throw new Error("Invalid Credentials");
                 }
             },
         }),
     ],
-    //csrf: false, // Disable CSRF for testing (do NOT use in production)
-
-    //callbacks
     callbacks: {
         async jwt({ token, user }) {
-
             if (user) {
-                token.id = user._id?.toString();;
+                token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
                 token.isAdmin = user.isAdmin;
                 token.isVerified = user.isVerified;
-
-
             }
             return token;
         },
@@ -75,9 +80,9 @@ export const authOptions: AuthOptions = {
             const userInDb = await User.findOne({ email: session.user.email });
 
             if (userInDb) {
+                session.user.id = userInDb._id?.toString();
                 session.user.isAdmin = userInDb.isAdmin;
                 session.user.isVerified = userInDb.isVerified;
-                session.user.id = userInDb._id.toString();
                 session.user.name = userInDb.name;
                 session.user.email = userInDb.email;
             }
@@ -93,7 +98,6 @@ export const authOptions: AuthOptions = {
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     secret: process.env.NEXTAUTH_SECRET,
-
 }
 
 const handler = NextAuth(authOptions);

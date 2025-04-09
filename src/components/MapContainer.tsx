@@ -7,7 +7,8 @@ import L from "leaflet";
 
 // Marker icon fix:
 // Fix default icon paths using new URL (instead of require)
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: () => string })._getIconUrl;
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
   iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,

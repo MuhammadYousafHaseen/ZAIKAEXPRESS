@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/card'
@@ -43,13 +43,13 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!userId) return
-    fetchUser()
-    fetchOrders()
-    fetchCart()
-    fetchProducts()
-  }, [userId])
+  // useEffect(() => {
+  //   if (!userId) return
+  //   fetchUser()
+  //   fetchOrders()
+  //   fetchCart()
+  //   fetchProducts()
+  // }, [userId])
 
   const fetchUser = async () => {
     try {
@@ -64,7 +64,7 @@ const UserDashboard = () => {
       toast.error('Failed to load user')
     }
   }
-
+  fetchUser();
   const fetchOrders = async () => {
     try {
       const res = await axios.get('/api/user/get-my-orders')
@@ -74,6 +74,7 @@ const UserDashboard = () => {
       toast.error('Failed to load orders')
     }
   }
+  fetchOrders();
 
   const fetchCart = async () => {
     try {
@@ -84,6 +85,7 @@ const UserDashboard = () => {
       toast.error('Failed to load cart')
     }
   }
+  fetchCart();
 
   const fetchProducts = async () => {
     setLoading(true)
@@ -98,6 +100,7 @@ const UserDashboard = () => {
       setLoading(false)
     }
   }
+  fetchProducts();
 
   const addToCart = async (productId: string) => {
     try {

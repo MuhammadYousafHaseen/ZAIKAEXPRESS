@@ -54,12 +54,12 @@ const SellerDashboard = () => {
   }, []);
 
   // Fetch data once ownerId is set
-  useEffect(() => {
-    if (ownerId) {
-      fetchProducts();
-      fetchOrders();
-    }
-  }, [ownerId]);
+  // useEffect(() => {
+  //   if (ownerId) {
+  //     fetchProducts();
+  //     fetchOrders();
+  //   }
+  // }, [ownerId]);
 
   const fetchProducts = async () => {
     try {
@@ -92,6 +92,9 @@ const SellerDashboard = () => {
       toast('Error loading orders');
     }
   };
+  fetchProducts();
+  fetchOrders();
+  
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
