@@ -108,7 +108,7 @@ const Page = () => {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="name"
+                      placeholder="Enter Your Name. Please don't add spaces in name."
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
