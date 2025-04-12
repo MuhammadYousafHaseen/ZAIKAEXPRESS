@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import FileUpload from '@/components/FileUpload';
-import { IKUploadResponse } from 'imagekitio-next/dist/types/components/IKUpload/props';
-import Image from 'next/image';
+import { useEffect, useState, useCallback } from "react";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import FileUpload from "@/components/FileUpload";
+import { IKUploadResponse } from "imagekitio-next/dist/types/components/IKUpload/props";
+import Image from "next/image";
 import OwnerLocationSender from "@/components/OwnerLocationSender";
 
 interface Product {
@@ -40,16 +40,16 @@ const SellerDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Product[]>([]);
   const [newProduct, setNewProduct] = useState({
-    name: '',
-    description: '',
-    price: '',
-    image: '',
+    name: "",
+    description: "",
+    price: "",
+    image: "",
   });
   const [loading, setLoading] = useState(false);
 
   // Read ownerId from localStorage (client-only)
   useEffect(() => {
-    const storedOwnerId = localStorage.getItem('ownerId');
+    const storedOwnerId = localStorage.getItem("ownerId");
     if (storedOwnerId) {
       setOwnerId(storedOwnerId);
     }
@@ -62,8 +62,8 @@ const SellerDashboard = () => {
       const res = await axios.post(`/api/owner/get-my-products`, { ownerId });
       setProducts(res.data.products || []);
     } catch (err) {
-      console.error('Error loading Products', err);
-      toast('Error loading products');
+      console.error("Error loading Products", err);
+      toast("Error loading products");
     }
   }, [ownerId, toast]);
 
@@ -85,8 +85,8 @@ const SellerDashboard = () => {
       );
       setOrders(flattenedOrders);
     } catch (err) {
-      console.log('Error loading Orders', err);
-      toast('Error loading orders');
+      console.log("Error loading Orders", err);
+      toast("Error loading orders");
     }
   }, [ownerId, toast]);
 
@@ -95,7 +95,9 @@ const SellerDashboard = () => {
     fetchOrders();
   }, [fetchProducts, fetchOrders]);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setNewProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -107,17 +109,17 @@ const SellerDashboard = () => {
     if (!ownerId) return;
     try {
       setLoading(true);
-      await axios.post('/api/owner/add-product', {
+      await axios.post("/api/owner/add-product", {
         ...newProduct,
         price: Number(newProduct.price),
         ownerId,
       });
-      toast('Product Posted!');
-      setNewProduct({ name: '', description: '', price: '', image: '' });
+      toast("Product Posted!");
+      setNewProduct({ name: "", description: "", price: "", image: "" });
       fetchProducts();
     } catch (err) {
-      console.log('Error Posting Product', err);
-      toast('Failed to post product');
+      console.log("Error Posting Product", err);
+      toast("Failed to post product");
     } finally {
       setLoading(false);
     }
@@ -126,11 +128,11 @@ const SellerDashboard = () => {
   const removeProduct = async (productId: string) => {
     try {
       await axios.post(`/api/owner/remove-product`, { productId });
-      toast('Product Removed');
+      toast("Product Removed");
       fetchProducts();
     } catch (err) {
-      console.log('Error Removing Product', err);
-      toast('Failed to remove product');
+      console.log("Error Removing Product", err);
+      toast("Failed to remove product");
     }
   };
 
@@ -138,11 +140,11 @@ const SellerDashboard = () => {
     if (!ownerId) return;
     try {
       await axios.patch(`/api/owner/product-delivered`, { productId, ownerId });
-      toast('Marked as delivered');
+      toast("Marked as delivered");
       fetchOrders();
     } catch (err) {
-      console.log('Failed to mark Delivered', err);
-      toast('Failed to mark delivered');
+      console.log("Failed to mark Delivered", err);
+      toast("Failed to mark delivered");
     }
   };
 
@@ -153,9 +155,24 @@ const SellerDashboard = () => {
       {/* Post Product Form */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Post New Product</h2>
-        <Input placeholder="Product Name" name="name" value={newProduct.name} onChange={handleInput} />
-        <Textarea placeholder="Description" name="description" value={newProduct.description} onChange={handleInput} />
-        <Input placeholder="Price" name="price" value={newProduct.price} onChange={handleInput} />
+        <Input
+          placeholder="Product Name"
+          name="name"
+          value={newProduct.name}
+          onChange={handleInput}
+        />
+        <Textarea
+          placeholder="Description"
+          name="description"
+          value={newProduct.description}
+          onChange={handleInput}
+        />
+        <Input
+          placeholder="Price"
+          name="price"
+          value={newProduct.price}
+          onChange={handleInput}
+        />
 
         {/* Image Upload */}
         <div className="space-y-2">
@@ -166,7 +183,7 @@ const SellerDashboard = () => {
         </div>
 
         <Button disabled={loading} onClick={handleProductPost} className="w-full mt-4">
-          {loading ? 'Posting...' : 'Post Product'}
+          {loading ? "Posting..." : "Post Product"}
         </Button>
       </div>
 
@@ -178,12 +195,22 @@ const SellerDashboard = () => {
           {products.length > 0 ? (
             products.map((prod) => (
               <Card key={prod._id} className="p-4 flex flex-col space-y-2">
-                <Image src={prod.image} alt={prod.name} width={600} height={400} className="object-cover w-full h-40 rounded-lg" />
+                <Image
+                  src={prod.image}
+                  alt={prod.name}
+                  width={600}
+                  height={400}
+                  className="object-cover w-full h-40 rounded-lg"
+                />
                 <CardContent>
                   <h3 className="font-bold text-lg">{prod.name}</h3>
                   <p>{prod.description}</p>
-                  <p>PKR:{prod.price}</p>
-                  <Button variant="destructive" onClick={() => removeProduct(prod._id)} className="cursor-pointer mt-2">
+                  <p>PKR: {prod.price}</p>
+                  <Button
+                    variant="destructive"
+                    onClick={() => removeProduct(prod._id)}
+                    className="cursor-pointer mt-2"
+                  >
                     Remove Product
                   </Button>
                 </CardContent>
@@ -193,9 +220,9 @@ const SellerDashboard = () => {
             <p>No products posted yet.</p>
           )}
         </div>
-              {/* This component will now start tracking and sending location data */}
-
-          <OwnerLocationSender ownerId={ownerId} />
+        
+        {/* Render OwnerLocationSender only if ownerId is non-null */}
+        {ownerId && <OwnerLocationSender ownerId={ownerId} />}
 
         {/* Orders */}
         <div className="space-y-4">
@@ -204,8 +231,8 @@ const SellerDashboard = () => {
             orders.map((order) => (
               <Card key={order._id} className="border-green-500 p-4 space-y-2">
                 <h3 className="font-bold">{order.name}</h3>
-                <p>PKR:{order.price}</p>
-                <p>Status: {order.isDelivered ? 'Delivered' : 'Pending'}</p>
+                <p>PKR: {order.price}</p>
+                <p>Status: {order.isDelivered ? "Delivered" : "Pending"}</p>
                 {order.purchaser && (
                   <div className="text-sm text-gray-600">
                     <p>Purchaser: {order.purchaser.name}</p>
@@ -214,7 +241,10 @@ const SellerDashboard = () => {
                   </div>
                 )}
                 {!order.isDelivered && (
-                  <Button onClick={() => markAsDelivered(order._id)} className="cursor-pointer mt-2">
+                  <Button
+                    onClick={() => markAsDelivered(order._id)}
+                    className="cursor-pointer mt-2"
+                  >
                     Mark as Delivered
                   </Button>
                 )}
@@ -230,3 +260,4 @@ const SellerDashboard = () => {
 };
 
 export default SellerDashboard;
+
