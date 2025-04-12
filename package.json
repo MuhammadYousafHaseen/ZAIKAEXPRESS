@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"node --loader ts-node/esm server.ts\"",
+    "dev": "concurrently \"next dev\" \"ts-node --loader ts-node/esm server.ts\"",
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "NODE_ENV=production node build/server.js",
     "lint": "next lint"
