@@ -1,137 +1,138 @@
-'use client'
+'use client';
 
-import { useEffect, useState, useCallback } from 'react'
-import axios from 'axios'
-import { useSession } from 'next-auth/react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { Pencil, ShoppingCart, Truck, PlusCircle } from 'lucide-react'
-import Image from 'next/image'
+import { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { toast } from 'sonner';
+import { Pencil, ShoppingCart, Truck, PlusCircle } from 'lucide-react';
+import Image from 'next/image';
 
 interface Order {
-  _id: string
-  name: string
-  price: number
-  isDelivered: boolean
-  estimatedDelivery?: string
-  description?: string
+  _id: string;
+  name: string;
+  price: number;
+  isDelivered: boolean;
+  estimatedDelivery?: string;
+  description?: string;
 }
 
 interface User {
-  name: string
-  email: string
-  address: string
+  name: string;
+  email: string;
+  address: string;
 }
 
 interface Product {
-  _id: string
-  name: string
-  description: string
-  image: string
-  price: number
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  price: number;
 }
 
 const UserDashboard = () => {
-  const { data: session } = useSession()
-  const userId = session?.user?.id as string
-  const [user, setUser] = useState<User | null>(null)
-  const [orders, setOrders] = useState<Order[]>([])
-  const [cart, setCart] = useState<Order[]>([])
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { data: session } = useSession();
+  const userId = session?.user?.id as string;
+  const [user, setUser] = useState<User | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [cart, setCart] = useState<Order[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchUser = useCallback(async () => {
     try {
-      const res = await axios.post(`/api/user/me`, { userId })
-      setUser(res.data)
+      const res = await axios.post(`/api/user/me`, { userId });
+      setUser(res.data);
     } catch (err) {
-      console.error("Failed to fetch User", err)
-      toast.error('Failed to load user')
+      console.error("Failed to fetch user", err);
+      toast.error('Failed to load user');
     }
-  }, [userId])
+  }, [userId]);
 
   const fetchOrders = useCallback(async () => {
     try {
-      const res = await axios.get('/api/user/get-my-orders')
-      setOrders(res.data.orders)
+      const res = await axios.get('/api/user/get-my-orders');
+      setOrders(res.data.orders);
     } catch (err) {
-      console.error("Failed to load orders", err)
-      toast.error('Failed to load orders')
+      console.error("Failed to load orders", err);
+      toast.error('Failed to load orders');
     }
-  }, [])
+  }, []);
 
   const fetchCart = useCallback(async () => {
     try {
-      const res = await axios.get('/api/user/get-my-cart')
-      setCart(res.data.cart)
+      const res = await axios.get('/api/user/get-my-cart');
+      setCart(res.data.cart);
     } catch (err) {
-      console.error("Failed to load cart", err)
-      toast.error('Failed to load cart')
+      console.error("Failed to load cart", err);
+      toast.error('Failed to load cart');
     }
-  }, [])
+  }, []);
 
   const fetchProducts = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await axios.get('/api/get-all-products')
-      setProducts(res.data.products)
-      setError(null)
+      const res = await axios.get('/api/get-all-products');
+      setProducts(res.data.products);
+      setError(null);
     } catch (err) {
-      console.error("Failed to load products", err)
-      setError('Failed to load products. Please try again later.')
+      console.error("Failed to load products", err);
+      setError('Failed to load products. Please try again later.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (userId) {
-      fetchUser()
-      fetchOrders()
-      fetchCart()
-      fetchProducts()
+      fetchUser();
+      fetchOrders();
+      fetchCart();
+      fetchProducts();
     }
-  }, [userId, fetchUser, fetchOrders, fetchCart, fetchProducts])
+  }, [userId, fetchUser, fetchOrders, fetchCart, fetchProducts]);
 
   const addToCart = async (productId: string) => {
     try {
-      const res = await axios.post('/api/user/add-to-cart', { productId })
-      setCart(res.data.cart)
-      toast.success('Item added to cart')
+      await axios.post('/api/user/add-to-cart', { productId });
+      const res = await axios.get('/api/user/get-my-cart');
+      setCart(res.data.cart);
+      toast.success('Item added to cart');
     } catch (err) {
-      console.error("Failed to add to cart", err)
-      toast.error('Failed to add to cart')
+      console.error("Failed to add to cart", err);
+      toast.error('Failed to add to cart');
     }
-  }
+  };
 
   const removeItemFromCart = async (productId: string) => {
     try {
-      await axios.post(`/api/user/remove-from-cart`, { productId })
-      toast.success('Item removed from cart')
-      fetchCart()
+      await axios.post(`/api/user/remove-from-cart`, { productId });
+      toast.success('Item removed from cart');
+      fetchCart();
     } catch (err) {
-      console.error("Failed to remove from cart", err)
-      toast.error('Failed to remove item')
+      console.error("Failed to remove from cart", err);
+      toast.error('Failed to remove item');
     }
-  }
+  };
 
   const placeOrder = async () => {
     try {
-      await axios.post('/api/user/place-order')
-      toast.success('Order placed successfully')
-      fetchOrders()
-      fetchCart()
+      await axios.post('/api/user/place-order');
+      toast.success('Order placed successfully');
+      fetchOrders();
+      fetchCart();
     } catch (err) {
-      console.error("Failed to place order", err)
-      toast.error('Failed to place order')
+      console.error("Failed to place order", err);
+      toast.error('Failed to place order');
     }
-  }
+  };
 
-  const delivered = orders.filter((o) => o.isDelivered)
-  const pending = orders.filter((o) => !o.isDelivered)
+  const delivered = orders.filter((o) => o.isDelivered);
+  const pending = orders.filter((o) => !o.isDelivered);
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-10">
@@ -150,7 +151,9 @@ const UserDashboard = () => {
                 <p><strong>Name:</strong> {user.name}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 <p><strong>Address:</strong> {user.address}</p>
-                <Button variant="outline" className="mt-2 cursor-pointer">Edit Profile</Button>
+                <Button asChild>
+                  <Link href="/profile/edit">Edit Profile</Link>
+                </Button>
               </>
             ) : (
               <p>Loading profile...</p>
@@ -164,22 +167,20 @@ const UserDashboard = () => {
               <ShoppingCart size={20} className="text-muted-foreground" />
               Cart
             </h2>
-            {cart.length ? (
-              cart.map((item) => (
-                <div key={item._id} className="flex justify-between cursor-pointer items-center py-2 border-b">
-                  <span>{item.name} - PKR:{item.price}</span>
-                  <Button variant="destructive" size="sm" className='cursor-pointer' onClick={() => removeItemFromCart(item._id)}>
-                    Remove
-                  </Button>
-                </div>
-              ))
+            {cart.length > 0 ? (
+              <>
+                {cart.map((item) => (
+                  <div key={item._id} className="flex justify-between items-center">
+                    <p>{item.name} - ${item.price}</p>
+                    <Button variant="destructive" onClick={() => removeItemFromCart(item._id)}>
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+                <Button onClick={placeOrder}>Place Order</Button>
+              </>
             ) : (
               <p>Your cart is empty.</p>
-            )}
-            {cart.length > 0 && (
-              <Button className="mt-4 w-full cursor-pointer" onClick={placeOrder}>
-                Place Order
-              </Button>
             )}
           </CardContent>
         </Card>
