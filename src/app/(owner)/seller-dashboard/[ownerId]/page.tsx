@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import FileUpload from '@/components/FileUpload';
 import { IKUploadResponse } from 'imagekitio-next/dist/types/components/IKUpload/props';
 import Image from 'next/image';
+import OwnerLocationSender from "@/components/OwnerLocationSender";
 
 interface Product {
   _id: string;
@@ -192,6 +193,9 @@ const SellerDashboard = () => {
             <p>No products posted yet.</p>
           )}
         </div>
+              {/* This component will now start tracking and sending location data */}
+
+          <OwnerLocationSender ownerId={ownerId} />
 
         {/* Orders */}
         <div className="space-y-4">
