@@ -1,18 +1,16 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "noEmit": false,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "target": "ES2020",
-      "outDir": "build",
-      "jsx": "react-jsx",
-     "esModuleInterop": true,
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "module": "CommonJS",
+    "target": "ES2020",
+    "outDir": "build",
+    "esModuleInterop": true,
     "strict": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true
-    },
-    "include": ["server.ts", "socket-server.ts", "src/**/*"]  // Include server files as needed
-  }
-  
+  },
+  "include": ["server.ts", "socket-server.ts"]
+}
+
