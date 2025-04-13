@@ -104,7 +104,7 @@ const UserDashboard = () => {
       toast.success('Item added to cart');
     } catch (err) {
       console.error("Failed to add to cart", err);
-      toast.error('Failed to add to cart');
+      toast.error('Failed to add into cart');
     }
   };
 
