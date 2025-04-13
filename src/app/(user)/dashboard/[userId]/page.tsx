@@ -9,6 +9,13 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { Pencil, ShoppingCart, Truck, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 
 interface Order {
   _id: string;
@@ -42,6 +49,10 @@ const UserDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDuplicate, setIsDuplicate] = useState(false);
 
   const fetchUser = useCallback(async () => {
     try {
@@ -202,7 +213,15 @@ const UserDashboard = () => {
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <p className="text-muted-foreground text-sm">{product.description}</p>
                   <p className="text-primary font-bold">PKR:{product.price}</p>
-                  <Button onClick={() => addToCart(product._id)} className="w-full mt-2 gap-2 cursor-pointer">
+                  <Button
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      const alreadyInCart = cart.some((item) => item._id === product._id);
+                      setIsDuplicate(alreadyInCart);
+                      setShowDialog(true);
+                    }}
+                    className="w-full mt-2 gap-2 cursor-pointer"
+                  >
                     <PlusCircle size={16} />
                     Add to Cart
                   </Button>
@@ -256,8 +275,43 @@ const UserDashboard = () => {
           </Button>
         </Link>
       </div>
-    </div>
-  )
-}
 
-export default UserDashboard
+      {/* Add to Cart Confirmation Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {isDuplicate ? "Already in Cart" : "Confirm Add to Cart"}
+            </DialogTitle>
+          </DialogHeader>
+          <div>
+            {selectedProduct && (
+              <p>
+                {isDuplicate
+                  ? `The item "${selectedProduct.name}" is already in your cart. Do you still want to add it again?`
+                  : `Do you want to add "${selectedProduct.name}" to your cart?`}
+              </p>
+            )}
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setShowDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={async () => {
+                if (selectedProduct) {
+                  await addToCart(selectedProduct._id);
+                  setShowDialog(false);
+                }
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default UserDashboard;
