@@ -2,7 +2,6 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "target": "ES2017",
-    "outDir": "dist",
     "lib": [
       "dom",
       "dom.iterable",
