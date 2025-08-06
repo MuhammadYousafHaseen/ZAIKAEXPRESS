@@ -2,12 +2,17 @@
   "name": "zaiqaexpress",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "concurrently \"next dev\" \"ts-node --loader ts-node/esm server.ts\"",
-    "build": "next build && tsc --project tsconfig.server.json",
-    "start": "NODE_ENV=production node build/server.js",
-    "lint": "next lint"
-  },
+"scripts": {
+  "build": "rimraf dist && tsc",
+  "ts.check": "tsc --project tsconfig.json",
+  "add-build": "git add dist",
+  "start": "node dist/server.js"
+},
+"pre-commit": [
+  "ts.check",
+  "build",
+  "add-build"
+],
   "engines": {
     "node": "18.x"
   },
