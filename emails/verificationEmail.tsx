@@ -62,7 +62,7 @@ export default function VerificationEmail({  username,otp }: VerificationEmailPr
           </Row>
           <Row style={{ textAlign: "center" }}>
             <Text style={{ fontSize: "14px", color: "#888" }}>
-              If you didn&apos;t sign up for this account, please ignore this email.
+              If you didn&apos;t sign up for this account, please skip this email.
             </Text>
           </Row>
         </Section>
