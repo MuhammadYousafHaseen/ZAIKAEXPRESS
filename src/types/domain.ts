@@ -15,6 +15,7 @@ export const EMAIL_DELIVERY_STATUSES = [
   "sent",
   "failed",
 ] as const;
+
 export type EmailDeliveryStatus =
   (typeof EMAIL_DELIVERY_STATUSES)[number];
 
@@ -24,7 +25,31 @@ export const SHOP_STATUSES = [
   "rejected",
   "suspended",
 ] as const;
+
 export type ShopStatus = (typeof SHOP_STATUSES)[number];
+
+/**
+ * Shared product categories.
+ *
+ * Shopkeepers will select one of these categories when creating
+ * a product. The selected category name is stored in the Product
+ * document, so a separate Category model is not required.
+ */
+export const PRODUCT_CATEGORIES = [
+  "Biryani",
+  "Burgers",
+  "Pizza",
+  "BBQ",
+  "Chicken",
+  "Seafood",
+  "Fast Food",
+  "Traditional Food",
+  "Chinese",
+  "Desserts",
+  "Drinks",
+] as const;
+
+export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
 export const PRODUCT_STATUSES = ["active", "inactive"] as const;
 export type ProductStatus = (typeof PRODUCT_STATUSES)[number];
@@ -38,6 +63,7 @@ export const PAYMENT_STATUSES = [
   "failed",
   "refunded",
 ] as const;
+
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
 export const ORDER_STATUSES = [
@@ -49,6 +75,7 @@ export const ORDER_STATUSES = [
   "delivered",
   "cancelled",
 ] as const;
+
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 export const CHECKOUT_STATUSES = [
@@ -57,6 +84,7 @@ export const CHECKOUT_STATUSES = [
   "completed",
   "cancelled",
 ] as const;
+
 export type CheckoutStatus = (typeof CHECKOUT_STATUSES)[number];
 
 export const DELIVERY_ASSIGNMENT_STATUSES = [
@@ -66,5 +94,6 @@ export const DELIVERY_ASSIGNMENT_STATUSES = [
   "delivered",
   "cancelled",
 ] as const;
+
 export type DeliveryAssignmentStatus =
   (typeof DELIVERY_ASSIGNMENT_STATUSES)[number];
