@@ -1,11 +1,9 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  MONGODB_URI: z.string().min(1, "MONGODB_URI is required"),
+  MONGODB_URI: z.string().min(1),
 
-  SESSION_SECRET: z
-    .string()
-    .min(32, "SESSION_SECRET must contain at least 32 characters"),
+  AUTH_SECRET: z.string().min(32),
 
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.string().optional(),
@@ -16,7 +14,7 @@ const envSchema = z.object({
 
 export const env = envSchema.parse({
   MONGODB_URI: process.env.MONGODB_URI,
-  SESSION_SECRET: process.env.SESSION_SECRET,
+  AUTH_SECRET: process.env.AUTH_SECRET,
   SMTP_HOST: process.env.SMTP_HOST,
   SMTP_PORT: process.env.SMTP_PORT,
   SMTP_USER: process.env.SMTP_USER,

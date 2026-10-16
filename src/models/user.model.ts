@@ -1,4 +1,6 @@
+
 import mongoose, { Schema, type Model, type Types } from "mongoose";
+
 import {
   USER_ROLES,
   ACCOUNT_STATUSES,
@@ -12,7 +14,7 @@ export interface IUser {
   _id: Types.ObjectId;
   name: string;
   email: string;
-  passwordHash: string;
+  passwordHash?: string;
   phone?: string;
   avatarUrl?: string;
   roles: UserRole[];
@@ -42,7 +44,6 @@ const userSchema = new Schema<IUser>(
     },
     passwordHash: {
       type: String,
-      required: true,
       select: false,
     },
     phone: {
@@ -91,7 +92,6 @@ const userSchema = new Schema<IUser>(
 );
 
 const User: Model<IUser> =
-  mongoose.models.User ||
-  mongoose.model<IUser>("User", userSchema);
+  mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
 export default User;
