@@ -107,7 +107,7 @@ export function ShopApplicationForm() {
   }
 
   const inputClass =
-    "mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary";
+    "mt-1 w-full rounded-xl border border-input bg-card px-3 py-2.5 text-card-foreground outline-none transition placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20";
 
   if (submitted) {
     return (
@@ -198,7 +198,10 @@ export function ShopApplicationForm() {
             {CUISINE_OPTIONS.map((cuisine) => (
               <label
                 key={cuisine}
-                className="flex items-center gap-2 rounded-xl border border-border p-3 text-sm"
+                className={`flex cursor-pointer items-center gap-2 rounded-xl border p-3 text-sm transition-colors ${cuisineTypes.includes(cuisine)
+                    ? "border-primary/50 bg-accent text-accent-foreground"
+                    : "border-border bg-card text-card-foreground hover:bg-muted"
+                  }`}
               >
                 <input
                   type="checkbox"
@@ -208,9 +211,9 @@ export function ShopApplicationForm() {
                     cuisineTypes.length >= 10
                   }
                   onChange={() => toggleCuisine(cuisine)}
-                  className="accent-primary"
+                  className="size-4 shrink-0 accent-primary"
                 />
-                {cuisine}
+                <span>{cuisine}</span>
               </label>
             ))}
           </div>
