@@ -59,12 +59,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
+        // Return only plain JavaScript values to Auth.js.
+        // Do not pass Mongoose documents or Mongoose arrays into the JWT.
         return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          roles: user.roles,
-          status: user.status,
+          id: String(user._id),
+          name: user.name ? String(user.name) : null,
+          email: user.email ? String(user.email) : null,
+          roles: Array.from(user.roles ?? [], (role): UserRole => role),
+          status: user.status as AccountStatus,
         };
       },
     }),
@@ -73,14 +75,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userId = user.id;
+        token.userId = String(user.id);
 
-        if (user.roles) {
-          token.roles = user.roles;
-        }
+        token.roles = Array.isArray(user.roles)
+          ? Array.from(user.roles, (role): UserRole => role)
+          : [];
 
         if (user.status) {
-          token.status = user.status;
+          token.status = user.status as AccountStatus;
         }
       }
 
@@ -98,15 +100,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const validRoles: UserRole[] = Array.isArray(token.roles)
           ? token.roles.filter(
-              (role): role is UserRole =>
-                typeof role === "string" &&
-                USER_ROLES.includes(role as UserRole)
-            )
+            (role): role is UserRole =>
+              typeof role === "string" &&
+              USER_ROLES.includes(role as UserRole)
+          )
           : [];
 
         const validStatus: AccountStatus =
           typeof token.status === "string" &&
-          ACCOUNT_STATUSES.includes(token.status as AccountStatus)
+            ACCOUNT_STATUSES.includes(token.status as AccountStatus)
             ? (token.status as AccountStatus)
             : "active";
 
