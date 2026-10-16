@@ -1,11 +1,11 @@
+
 import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 
 import { SiteHeader } from "@/src/components/site/site-header";
 import { HomeHero } from "@/src/components/site/home-hero";
-import { FoodCategories } from "@/src/components/site/food-categories";
-import { FeaturedFood } from "@/src/components/site/featured-food";
+import { HomeCatalog } from "@/src/components/site/home-catalog";
 import { getFeaturedProducts } from "@/src/services/catalog.service";
 
 async function FeaturedFoodContent() {
@@ -13,7 +13,7 @@ async function FeaturedFoodContent() {
 
   const products = await getFeaturedProducts();
 
-  return <FeaturedFood products={products} />;
+  return <HomeCatalog products={products} />;
 }
 
 function FeaturedFoodFallback() {
@@ -48,7 +48,6 @@ export default function HomePage() {
 
       <main className="flex-1">
         <HomeHero />
-        <FoodCategories />
 
         <Suspense fallback={<FeaturedFoodFallback />}>
           <FeaturedFoodContent />
